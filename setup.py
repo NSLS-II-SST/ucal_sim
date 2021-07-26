@@ -5,6 +5,6 @@ setup(
     author_email="charles.titus@nist.gov",
     install_requires=["bluesky", "ophyd"],
     name="sst_sim_shims",
-    version="0.1.0",
+    use_scm_version=True,
     packages=find_packages()
 )

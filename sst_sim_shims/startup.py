@@ -1,4 +1,5 @@
-from sst_base.frames import vec, Bar
+from sst_base.linalg import vec
+from sst_base.sample_bar import Bar
 from .motors import Manipulator
 from .detectors import SynI1
 
@@ -6,7 +7,7 @@ from .detectors import SynI1
 p1 = vec(10, 10, 0)
 p2 = vec(10, 10, 1)
 p3 = vec(0, 9, 0)
-bar = Bar(p1, p2, p3, width=19.5, height=130, nsides=4)
+bar = Bar(p1, p2, p3, 19.5, 130, nsides=4, name='sample_bar')
 
 man = Manipulator(bar, name='manipulator')
 
