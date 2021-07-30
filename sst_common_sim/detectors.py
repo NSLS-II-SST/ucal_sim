@@ -54,3 +54,25 @@ class SynI1(Device):
     def trigger(self, *args, **kwargs):
         return self.val.trigger(*args, **kwargs)
 
+class SynNormal(Device):
+    val = Cpt(SynSignal, kind='hinted')
+    center = Cpt(Signal, value=0, kind='config')
+    width = Cpt(Signal, value=1, kind='config')
+
+    def _compute(self):
+        width = self.width.get()
+        center = self.center.get()
+        v = np.random.normal(center, width)
+        return v
+
+    def __init__(self, name, width=1, center=0, **kwargs):
+        super().__init__(name=name, **kwargs)
+        self.center.put(center)
+        self.width.put(width)
+        self.val.name = self.name
+        self.val.sim_set_func(self._compute)
+        self.trigger()
+        
+    def trigger(self, *args, **kwargs):
+        return self.val.trigger(*args, **kwargs)
+        
