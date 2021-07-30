@@ -1,8 +1,8 @@
 from sst_base.linalg import vec
 from sst_base.sample_bar import SampleHolder
 from .motors import Manipulator
-from .detectors import SynI1
-from ophyd.sim import SynSignal
+from .detectors import SynI1, SynNormal
+
 
 
 p1 = vec(10, 10, 0)
