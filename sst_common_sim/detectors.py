@@ -49,7 +49,8 @@ class SynI1(Device):
         self.random_state = random_state
         self.val.name = self.name
         self.val.sim_set_func(self._compute)
-        self.trigger()
+        # Don't trigger during __init__, manipulator may not be set up yet
+        # self.trigger()
 
     def trigger(self, *args, **kwargs):
         return self.val.trigger(*args, **kwargs)
