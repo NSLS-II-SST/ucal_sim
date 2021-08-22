@@ -40,7 +40,7 @@ def _startup():
                            framez=framez,
                            framer=framer)
 
+
 globals().update(_startup().__dict__)
 # slits?
 # mono
-# 
