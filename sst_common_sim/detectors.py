@@ -3,8 +3,10 @@ from ophyd.sim import SynSignal, EnumSignal
 import numpy as np
 from scipy.special import erf
 
+
 def norm_erf(x, width=1):
     return 0.5*(erf(2.0*x/width) + 1)
+
 
 class SynI1(Device):
     val = Cpt(SynSignal, kind='hinted')
@@ -12,7 +14,7 @@ class SynI1(Device):
     center = Cpt(Signal, value=0, kind='config')
     width = Cpt(Signal, value=1, kind='config')
     noise = Cpt(EnumSignal, value='none', kind='config',
-                enum_strings=('none','uniform', 'normal'))
+                enum_strings=('none', 'uniform', 'normal'))
     noise_multiplier = Cpt(Signal, value=0.1, kind='config')
     noise_sigma = Cpt(Signal, value=0.1, kind='config')
 
@@ -32,11 +34,11 @@ class SynI1(Device):
             v += self.random_state.uniform(-1, 1)*noise_multiplier
         return v
 
-    # need to fix detector to use positioner
-    def __init__(self, name, manipulator, width=1, noise="none", noise_sigma=0.1, noise_multiplier=0.1,
+    def __init__(self, name, manipulator, width=1, noise="none",
+                 noise_sigma=0.1, noise_multiplier=0.1,
                  random_state=None, **kwargs):
         super().__init__(name=name, **kwargs)
-        self._manipulator = manipulator        
+        self._manipulator = manipulator
         self.center.put(0)
         self.Imax.put(1)
         self.width.put(width)
@@ -54,6 +56,7 @@ class SynI1(Device):
 
     def trigger(self, *args, **kwargs):
         return self.val.trigger(*args, **kwargs)
+
 
 class SynNormal(Device):
     val = Cpt(SynSignal, kind='hinted')
@@ -73,7 +76,6 @@ class SynNormal(Device):
         self.val.name = self.name
         self.val.sim_set_func(self._compute)
         self.trigger()
-        
+
     def trigger(self, *args, **kwargs):
         return self.val.trigger(*args, **kwargs)
-        

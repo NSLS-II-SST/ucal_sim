@@ -6,9 +6,9 @@ from types import SimpleNamespace
 
 
 def _startup():
-    p1 = vec(10, 10, 0)
-    p2 = vec(10, 10, 1)
-    p3 = vec(0, 9, 0)
+    # p1 = vec(10, 10, 0)
+    # p2 = vec(10, 10, 1)
+    # p3 = vec(0, 9, 0)
     # p1, p2, p3, 19.5, 130, nsides=4,
     sample_holder = SampleHolder(name='sample_holder')
     manipulator = Manipulator(sample_holder, name='manipulator')
