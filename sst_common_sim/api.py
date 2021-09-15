@@ -18,13 +18,13 @@ def _startup():
     samplez = manipulator.z
     sampler = manipulator.r
 
-    framex  = manipulator.sx
-    framey  = manipulator.sy
-    framez  = manipulator.sz
-    framer  = manipulator.sr
+    framex = manipulator.sx
+    framey = manipulator.sy
+    framez = manipulator.sz
+    framer = manipulator.sr
 
-    i1  = SynI1("i1", manipulator)
-    i0  = SynNormal("i0", width=1, center=10)
+    i1 = SynI1("i1", manipulator)
+    i0 = SynNormal("i0", width=1, center=10)
     ref = SynNormal("ref", width=1, center=20)
     return SimpleNamespace(i1=i1,
                            i0=i0,
