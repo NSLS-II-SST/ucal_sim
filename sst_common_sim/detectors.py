@@ -8,7 +8,7 @@ def norm_erf(x, width=1):
     return 0.5*(erf(2.0*x/width) + 1)
 
 
-class SynI1(Device):
+class SynErf(Device):
     val = Cpt(SynSignal, kind='hinted')
     Imax = Cpt(Signal, value=1, kind='config')
     center = Cpt(Signal, value=0, kind='config')
@@ -19,7 +19,7 @@ class SynI1(Device):
     noise_sigma = Cpt(Signal, value=0.1, kind='config')
 
     def _compute(self):
-        dist = -1*self._manipulator.distance_to_beam()
+        dist = self._distance()*self.sign
         width = self.width.get()
         center = self.center.get()
         Imax = self.Imax.get()
@@ -34,11 +34,12 @@ class SynI1(Device):
             v += self.random_state.uniform(-1, 1)*noise_multiplier
         return v
 
-    def __init__(self, name, manipulator, width=1, noise="none",
+    def __init__(self, name, distance_function, width=1, noise="none",
                  noise_sigma=0.1, noise_multiplier=0.1,
-                 random_state=None, **kwargs):
+                 random_state=None, transmission=False, **kwargs):
         super().__init__(name=name, **kwargs)
-        self._manipulator = manipulator
+        self._distance = distance_function
+        self.sign = -1 if transmission else 1
         self.center.put(0)
         self.Imax.put(1)
         self.width.put(width)
