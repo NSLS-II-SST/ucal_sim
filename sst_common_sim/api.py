@@ -1,7 +1,7 @@
 from sst_base.linalg import vec
 from sst_base.sample_bar import SampleHolder
 from .motors import Manipulator
-from .detectors import SynI1, SynNormal
+from .detectors import SynErf, SynNormal
 from types import SimpleNamespace
 
 
@@ -23,7 +23,8 @@ def _startup():
     framez = manipulator.sz
     framer = manipulator.sr
 
-    i1 = SynI1("i1", manipulator)
+    i1 = SynErf("i1", manipulator, transmission=True)
+    sample_current = SynErf("sc", manipulator, transmission=False)
     i0 = SynNormal("i0", width=1, center=10)
     ref = SynNormal("ref", width=1, center=20)
     return SimpleNamespace(i1=i1,
