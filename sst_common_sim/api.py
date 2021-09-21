@@ -23,13 +23,15 @@ def _startup():
     framez = manipulator.sz
     framer = manipulator.sr
 
-    i1 = SynErf("i1", manipulator, transmission=True)
-    sample_current = SynErf("sc", manipulator, transmission=False)
+    i1 = SynErf("i1", manipulator.distance_to_beam, transmission=True)
+    sample_current = SynErf("sc", manipulator.distance_to_beam,
+                            transmission=False)
     i0 = SynNormal("i0", width=1, center=10)
     ref = SynNormal("ref", width=1, center=20)
     return SimpleNamespace(i1=i1,
                            i0=i0,
                            ref=ref,
+                           sample_current=sample_current,
                            sample_holder=sample_holder,
                            manipulator=manipulator,
                            samplex=samplex,

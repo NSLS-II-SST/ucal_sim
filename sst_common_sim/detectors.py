@@ -39,7 +39,7 @@ class SynErf(Device):
                  random_state=None, transmission=False, **kwargs):
         super().__init__(name=name, **kwargs)
         self._distance = distance_function
-        self.sign = -1 if transmission else 1
+        self.sign = 1 if transmission else -1
         self.center.put(0)
         self.Imax.put(1)
         self.width.put(width)
