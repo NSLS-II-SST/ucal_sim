@@ -27,9 +27,11 @@ def _startup():
     sample_current = SynErf("sc", manipulator.distance_to_beam,
                             transmission=False)
     i0 = SynNormal("i0", width=1, center=10)
+    thresholds = {'i1': 0.05, 'i0':0.01, 'sample_current': 0.05, 'ref':0.01}
     ref = SynNormal("ref", width=1, center=20)
     return SimpleNamespace(i1=i1,
                            i0=i0,
+                           thresholds=thresholds,
                            ref=ref,
                            sample_current=sample_current,
                            sample_holder=sample_holder,
