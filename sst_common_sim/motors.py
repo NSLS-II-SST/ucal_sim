@@ -1,4 +1,4 @@
-from sst_base.motors import ManipulatorBase
+from bl_base.manipulator import ManipulatorBase
 from ophyd import Component as Cpt
 from ophyd.positioner import SoftPositioner
 

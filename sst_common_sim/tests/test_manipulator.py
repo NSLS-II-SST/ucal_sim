@@ -1,6 +1,6 @@
-from sst_base.sample_bar import SampleHolder
-from .motors import Manipulator
-from .detectors import SynI1
+from bl_base.sampleholder import SampleHolder
+from sst_common_sim.motors import Manipulator
+from sst_common_sim.detectors import SynI1
 import pytest
 
 

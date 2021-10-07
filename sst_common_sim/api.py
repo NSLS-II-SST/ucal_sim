@@ -1,5 +1,5 @@
-from sst_base.linalg import vec
-from sst_base.sample_bar import SampleHolder
+from bl_funcs.geometry.linalg import vec
+from bl_base.sampleholder import SampleHolder
 from .motors import Manipulator
 from .detectors import SynErf, SynNormal
 from types import SimpleNamespace
