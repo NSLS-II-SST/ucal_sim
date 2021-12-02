@@ -1,10 +1,13 @@
-from bl_base.manipulator import ManipulatorBase
+from bl_base.manipulator import Manipulator4AxBase
 from ophyd import Component as Cpt
 from ophyd.positioner import SoftPositioner
 
 
-class Manipulator(ManipulatorBase):
-    x = Cpt(SoftPositioner, name='x', init_pos=0.0)
-    y = Cpt(SoftPositioner, name='y', init_pos=0.0)
-    z = Cpt(SoftPositioner, name='z', init_pos=0.0)
-    r = Cpt(SoftPositioner, name='r', init_pos=0.0)
+class Manipulator(Manipulator4AxBase):
+    x = Cpt(SoftPositioner, name='Sample X', init_pos=0.0)
+    y = Cpt(SoftPositioner, name='Sample Y', init_pos=0.0)
+    z = Cpt(SoftPositioner, name='Sample Z', init_pos=0.0)
+    r = Cpt(SoftPositioner, name='Sample R', init_pos=0.0)
+
+
+tesz = SoftPositioner(name='TES Z', init_pos=0.0)
