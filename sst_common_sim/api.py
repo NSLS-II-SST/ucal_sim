@@ -1,5 +1,6 @@
 from bl_funcs.geometry.linalg import vec
 from bl_base.sampleholder import SampleHolder
+from bl_funcs.geometry.frames import Frame
 from .motors import Manipulator
 from .detectors import SynErf, SynNormal
 from types import SimpleNamespace
@@ -10,7 +11,10 @@ def _startup():
     # p2 = vec(10, 10, 1)
     # p3 = vec(0, 9, 0)
     # p1, p2, p3, 19.5, 130, nsides=4,
-    manipulator = Manipulator(None, name='manipulator')
+    manip_origin = vec(0, 0, 531)
+    manip_frame = Frame(vec(0, 0, -531), vec(0, 1, -531), vec(1, 0, -531),
+                        rot_meas_axis=0)
+    manipulator = Manipulator(None, origin=manip_origin, name='manipulator')
 
     manipx = manipulator.x
     manipy = manipulator.y
