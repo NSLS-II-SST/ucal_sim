@@ -1,4 +1,4 @@
-from bl_base.slits import Slits
+from sst_base.slits import Slits
 from ophyd.positioner import SoftPositioner
 
 class SimSlits(Slits):
