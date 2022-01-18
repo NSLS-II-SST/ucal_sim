@@ -13,7 +13,7 @@ def _startup():
     # p1, p2, p3, 19.5, 130, nsides=4,
     manip_origin = vec(0, 0, 531)
     # manip_frame = Frame(vec(0, 0, -531), vec(0, 1, -531), vec(1, 0, -531),
-                        rot_meas_axis=0)
+    # rot_meas_axis=0)
     manipulator = Manipulator(None, origin=manip_origin, name='manipulator')
 
     i1 = SynErf("i1", manipulator.distance_to_beam, transmission=True)
