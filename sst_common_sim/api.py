@@ -4,7 +4,7 @@ from sst_funcs.geometry.frames import Frame
 from .motors import Manipulator, MultiMesh
 from .detectors import SynErf, SynNormal
 from types import SimpleNamespace
-
+from .shutters import psh7
 
 #def _startup():
 # p1 = vec(10, 10, 0)
@@ -19,8 +19,8 @@ multimesh = MultiMesh(None, name="multimesh")
 
 i1 = SynErf("i1", manipulator.distance_to_beam, transmission=True)
 sc = SynErf("sc", manipulator.distance_to_beam, transmission=False)
+tes = SynErf("tes", manipulator.distance_to_beam, transmission=False)
 i0 = SynNormal("i0", width=1, center=10)
 thresholds = {'i1': 0.05, 'i0': 0.01, 'sc': 0.05, 'ref': 0.01}
 ref = SynErf("ref", multimesh.distance_to_beam, transmission=True)
-
 #globals().update(_startup().__dict__)
