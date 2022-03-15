@@ -55,7 +55,7 @@ class SynErf(Device):
         # Don't trigger during __init__, manipulator may not be set up yet
         # self.trigger()
 
-pp    def trigger(self, *args, **kwargs):
+    def trigger(self, *args, **kwargs):
         return self.val.trigger(*args, **kwargs)
 
 
