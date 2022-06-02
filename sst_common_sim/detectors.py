@@ -1,11 +1,34 @@
-from ophyd import Device, Signal, Component as Cpt
+from ophyd import Device, Signal, Component as Cpt, DeviceStatus
 from ophyd.sim import SynSignal, EnumSignal
 import numpy as np
 from scipy.special import erf
+import time as ttime
+import threading
 
 
 def norm_erf(x, width=1):
     return 0.5*(erf(2.0*x/width) + 1)
+
+
+class SynSignalDelayed(SynSignal):
+
+    def trigger(self):
+        st = DeviceStatus(device=self)
+        delay_time = self.exposure_time
+        if delay_time:
+
+            def sleep_and_finish():
+                self.log.debug('sleep_and_finish %s', self)
+                ttime.sleep(delay_time)
+                st.set_finished()
+            threading.Thread(target=sleep_and_finish, daemon=True).start()
+        else:
+            st.set_finished()
+        return st
+
+    def read(self):
+        self.put(self._func())
+        return super().read()
 
 
 class SynErf(Device):
@@ -59,6 +82,29 @@ class SynErf(Device):
         return self.val.trigger(*args, **kwargs)
 
 
+class SynLinear(Device):
+    val = Cpt(SynSignal, kind="hinted")
+    offset = Cpt(Signal, value=0, kind="config")
+    slope = Cpt(Signal, value=1, kind="config")
+
+    def _compute(self):
+        x = self._x()
+        m = self.slope.get()
+        b = self.offset.get()
+        return m*x + b
+
+    def __init__(self, name, x, offset=0, slope=1, **kwargs):
+        super().__init__(name=name, **kwargs)
+        self.offset.put(offset)
+        self.slope.put(slope)
+        self._x = x
+        self.val.sim_set_func(self._compute)
+        self.trigger()
+
+    def trigger(self, *args, **kwargs):
+        return self.val.trigger(*args, **kwargs)
+
+
 class SynNormal(Device):
     val = Cpt(SynSignal, kind='hinted')
     center = Cpt(Signal, value=0, kind='config')
@@ -80,3 +126,64 @@ class SynNormal(Device):
 
     def trigger(self, *args, **kwargs):
         return self.val.trigger(*args, **kwargs)
+
+
+class SynCompound(Device):
+    val = Cpt(SynSignalDelayed, kind="hinted")
+
+    def _compute(self):
+        vals = []
+        for s in self.signal_list:
+            vals.append(s.val.get())
+        return self._func(*vals)
+
+    def __init__(self, name, *, signal_list, func, **kwargs):
+        super().__init__(name=name, **kwargs)
+        self.signal_list = signal_list
+        self._func = func
+        self.val.sim_set_func(self._compute)
+
+    def trigger(self, *args, **kwargs):
+        return self.val.trigger(*args, **kwargs)
+
+
+class SynMult(SynCompound):
+
+    def __init__(self, name, *, signal_list, **kwargs):
+        def func(*args):
+            return np.prod(args)
+
+        super().__init__(name, signal_list=signal_list, func=func, **kwargs)
+
+
+class DerivedSynDevice(Device):
+    val = Cpt(SynSignalDelayed, kind='hinted')
+
+    def _compute(self):
+        return self.signal.val.get()
+
+    def __init__(self, name, signal, **kwargs):
+        super().__init__(name=name, **kwargs)
+        self.signal = signal
+        self.val.sim_set_func(self._compute)
+
+    def trigger(self, *args, **kwargs):
+        return self.val.trigger(*args, **kwargs)
+
+
+class SimI400Base(Device):
+    exposure_sp = Cpt(Signal, name="exposure_time", kind="config")
+
+    def set_exposure(self, exp_time):
+        self.exposure_sp.set(f"{exp_time}")
+
+    def _acquire(self, status):
+        t = float(self.exposure_sp.get())
+        ttime.sleep(t)
+        status.set_finished()
+        return
+
+    def trigger(self, *args, **kwargs):
+        status = DeviceStatus(self)
+        threading.Thread(target=self._acquire, args=(status,), daemon=True).start()
+        return status

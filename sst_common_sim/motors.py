@@ -14,4 +14,5 @@ class MultiMesh(Manipulator1AxBase):
     x = Cpt(SoftPositioner, name='Multimesh', init_pos=0.0, kind='hinted')
 
 
-tesz = SoftPositioner(name='TES Z', init_pos=0.0, kind='hinted')
+tesz = SoftPositioner(name='tesz', init_pos=0.0, kind='hinted')
+eslit = SoftPositioner(name='eslit', init_pos=0.0, kind='hinted')

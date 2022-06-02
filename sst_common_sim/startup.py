@@ -1,6 +1,10 @@
+"""
+Old, not used!
+"""
+
 # from sst_base.linalg import vec
 from sst_base.sampleholder import SampleHolder
-from .motors import Manipulator
+from .motors import Manipulator, MultiMesh
 from .detectors import SynErf, SynNormal
 from types import SimpleNamespace
 
@@ -10,24 +14,28 @@ def _startup():
     # p2 = vec(10, 10, 1)
     # p3 = vec(0, 9, 0)
     # p1, p2, p3, 19.5, 130, nsides=4,
-    sample_holder = SampleHolder(name='sample_holder')
-    manipulator = Manipulator(sample_holder, name='manipulator')
 
-    samplex = manipulator.x
-    sampley = manipulator.y
-    samplez = manipulator.z
-    sampler = manipulator.r
+    manipulator = Manipulator(None, name='manipulator')
+    sample_holder = SampleHolder(manipulator=manipulator, name='sample_holder')
+    multimesh = MultiMesh(None, name="i0upmultimesh")
 
-    framex = manipulator.sx
-    framey = manipulator.sy
-    framez = manipulator.sz
-    framer = manipulator.sr
+    manipx = manipulator.x
+    manipy = manipulator.y
+    manipz = manipulator.z
+    manipr = manipulator.r
 
-    i1 = SynErf("i1", manipulator.distance_to_bar, transmission=True)
+    samplex = manipulator.sx
+    sampley = manipulator.sy
+    samplez = manipulator.sz
+    sampler = manipulator.sr
+
+    i1 = SynErf("i1", manipulator.distance_to_beam, transmission=True)
+    sc = SynErf("sc", manipulator.sample_distance_to_beam)
     i0 = SynNormal("i0", width=1, center=10)
     ref = SynNormal("ref", width=1, center=20)
     return SimpleNamespace(i1=i1,
                            i0=i0,
+                           sc=sc,
                            ref=ref,
                            sample_holder=sample_holder,
                            manipulator=manipulator,
@@ -35,10 +43,11 @@ def _startup():
                            sampley=sampley,
                            samplez=samplez,
                            sampler=sampler,
-                           framex=framex,
-                           framey=framey,
-                           framez=framez,
-                           framer=framer)
+                           manipx=manipx,
+                           manipy=manipy,
+                           manipz=manipz,
+                           manipr=manipr,
+                           multimesh=multimesh)
 
 
 globals().update(_startup().__dict__)

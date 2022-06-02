@@ -24,3 +24,4 @@ class Sim_Shutter(Device):
             self.state.set(self.closeval)
 
 psh7 = Sim_Shutter(name="psh7")
+psh10 = Sim_Shutter(name="psh10")
