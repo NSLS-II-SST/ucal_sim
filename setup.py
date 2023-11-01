@@ -7,5 +7,5 @@ setup(
     name="ucal_sim",
     use_scm_version=True,
     packages=find_packages(),
-    package_data={"ucal_sim.config": ["*.nc"]}
+    package_data={"ucal_sim": ["config/*.nc"]}
 )
