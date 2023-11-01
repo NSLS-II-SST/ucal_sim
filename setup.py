@@ -4,8 +4,7 @@ setup(
     author="Charles Titus",
     author_email="charles.titus@nist.gov",
     install_requires=["bluesky", "ophyd", "numpy", "scipy"],
-    name="sst_common_sim",
-    entry_points = {"sst_common": ["sst_sim = sst_common_sim.api"]},
+    name="ucal_sim",
     use_scm_version=True,
     packages=find_packages()
 )
