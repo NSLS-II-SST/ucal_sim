@@ -6,5 +6,6 @@ setup(
     install_requires=["bluesky", "ophyd", "numpy", "scipy"],
     name="ucal_sim",
     use_scm_version=True,
-    packages=find_packages()
+    packages=find_packages(),
+    package_data={"ucal_sim.config": ["*.nc"]}
 )
