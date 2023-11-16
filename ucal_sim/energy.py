@@ -22,8 +22,9 @@ class FMB_Mono_Grating_Type(PVPositioner):
 class Monochromator(DeadbandMixin, PVPositioner):
     gratingx = Cpt(FMB_Mono_Grating_Type, "GrtX}Mtr", kind="config")
     cff = Cpt(EpicsSignal, ":CFF_SP", name="Mono CFF", kind="config", auto_monitor=True)
-    setpoint = Cpt(EpicsSignal, "", kind="normal")
-    readback = Cpt(EpicsSignalRO, ".VAL", kind="hinted")
+    setpoint = Cpt(EpicsSignal, ":ENERGY_SP", kind="normal")
+    readback = Cpt(EpicsSignalRO, ":ENERGY_MON", kind="hinted")
+    done = Cpt(EpicsSignal, ":ERDY_STS", kind="hinted")
 
 
 class NewEnPos(PseudoPositioner):
