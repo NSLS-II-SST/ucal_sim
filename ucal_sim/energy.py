@@ -1,11 +1,11 @@
 from ophyd import Component as Cpt
-from ophyd import PseudoPositioner, Signal, PVPositioner, EpicsSignal
+from ophyd import PseudoPositioner, Signal, PVPositioner, EpicsSignal, EpicsSignalRO
 from ophyd.pseudopos import pseudo_position_argument, real_position_argument
 import pathlib
 import numpy as np
 import xarray as xr
 from sst_base.motors import PrettyMotor
-from sst_base.positioners import DeadbandEpicsMotor, PseudoSingle
+from sst_base.positioners import DeadbandEpicsMotor, PseudoSingle, DeadbandMixin
 
 
 class FMB_Mono_Grating_Type(PVPositioner):
@@ -18,9 +18,12 @@ class FMB_Mono_Grating_Type(PVPositioner):
     clear_encoder_loss = Cpt(EpicsSignal, '_ENC_LSS_CLR_CMD.PROC')
     done = Cpt(EpicsSignal, '_AXIS_STS')
 
-class Monochromator(DeadbandEpicsMotor):
+
+class Monochromator(DeadbandMixin, PVPositioner):
     gratingx = Cpt(FMB_Mono_Grating_Type, "GrtX}Mtr", kind="config")
     cff = Cpt(EpicsSignal, ":CFF_SP", name="Mono CFF", kind="config", auto_monitor=True)
+    setpoint = Cpt(EpicsSignal, "", kind="normal")
+    readback = Cpt(EpicsSignalRO, ".VAL", kind="hinted")
 
 
 class NewEnPos(PseudoPositioner):
